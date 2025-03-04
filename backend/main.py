@@ -66,7 +66,7 @@ async def generate_answer(context: str, conversation_history: List[dict]) -> str
                     {formatted_history}"""
 
     message = client.messages.create(
-        model="claude-3-sonnet",
+        model="claude-3-7-sonnet-20250219",
         max_tokens=1024,
         messages=[
             {"role": "user", "content": full_prompt}

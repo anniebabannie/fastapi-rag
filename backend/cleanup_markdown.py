@@ -39,35 +39,39 @@ def create_output_directory(input_path: str, base_input_dir: str, base_output_di
     return output_dir
 
 def main():
-    """Process markdown files from fly-docs to docs directory."""
-    input_dir = "fly-docs"
-    output_base_dir = "docs"
+    """Process markdown files from fly-docs and fly-blog to respective directories."""
+    # Define input and output directories
+    input_dirs = {
+        "fly-docs": "content/docs",
+        "fly-blog": "content/blog"
+    }
     
-    # Ensure output directory exists
-    os.makedirs(output_base_dir, exist_ok=True)
-    
-    # Get all files
-    all_files = get_all_files(input_dir)
-    print(f"Found {len(all_files)} total files")
-    print("All files found:", all_files)
-    
-    for input_path in all_files:
-        if input_path.endswith(('.html.markerb', '.html.md')):
-            print(f"Processing markdown file: {input_path}")
-            
-            # Create output directory and determine output file path
-            output_dir = create_output_directory(input_path, input_dir, output_base_dir)
-            output_file = os.path.basename(input_path)
-            output_file = output_file.replace('.html.markerb', '.md').replace('.html.md', '.md')
-            output_path = os.path.join(output_dir, output_file)
-            
-            # Process and write content
-            content = parse_markdown_file(input_path)
-            with open(output_path, 'w', encoding='utf-8') as f:
-                f.write(content)
-            print(f"Processed: {input_path} -> {output_path}")
-        else:
-            print(f"Skipping non-markdown file: {input_path}")
+    for input_dir, output_base_dir in input_dirs.items():
+        # Ensure output directory exists
+        os.makedirs(output_base_dir, exist_ok=True)
+        
+        # Get all files
+        all_files = get_all_files(input_dir)
+        print(f"Found {len(all_files)} total files in {input_dir}")
+        print("All files found:", all_files)
+        
+        for input_path in all_files:
+            if input_path.endswith(('.html.markerb', '.html.md')):
+                print(f"Processing markdown file: {input_path}")
+                
+                # Create output directory and determine output file path
+                output_dir = create_output_directory(input_path, input_dir, output_base_dir)
+                output_file = os.path.basename(input_path)
+                output_file = output_file.replace('.html.markerb', '.md').replace('.html.md', '.md')
+                output_path = os.path.join(output_dir, output_file)
+                
+                # Process and write content
+                content = parse_markdown_file(input_path)
+                with open(output_path, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                print(f"Processed: {input_path} -> {output_path}")
+            else:
+                print(f"Skipping non-markdown file: {input_path}")
     
     print("\nProcessing complete!")
 

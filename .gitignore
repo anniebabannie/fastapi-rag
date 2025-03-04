@@ -175,3 +175,6 @@ static/
 # Ignore the docs directory
 backend/docs/
 backend/fly-docs/
+backend/blog/
+backend/fly-blog/
+backend/content/*
